@@ -3,9 +3,11 @@
 Plugin Name: Wp Netlify Updater
 Plugin URI: http://www.example.com/plugin
 Description: WordPress plugins Netlify build hook when updating posts
-Author: yahsan2
-Version: 0.1
-Author URI: https://github.com/yahsan2
+Version: 1.0.0
+Original Author: yahsan2
+Original Author URI: https://github.com/yahsan2
+Author: hiro
+Author URI: https://github.com/hiro0218/wp-netlify-updater
 */
 class WpNetlifyUpdater
 {
