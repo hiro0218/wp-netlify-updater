@@ -10,11 +10,3 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 WordPress plugins Netlify build hook when updating posts
-
-== Installation ==
-0. cd path/to/wp-content/plugins/ && git clone https://github.com/yahsan2/wp-netlify-updater
-1. Activate Wp Netlify Updater plugins
-2. Set up Netfily incoming webhooks on admin page > Options > Wp Netlify Updater
-
-== Changelog ==
-2018/04/29 First Commit
