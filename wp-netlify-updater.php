@@ -1,19 +1,19 @@
 <?php
 /*
 Plugin Name: Wp Netlify Updater
-Plugin URI: http://www.example.com/plugin
+Plugin URI: https://github.com/hiro0218/wp-netlify-updater
 Description: WordPress plugins Netlify build hook when updating posts
 Version: 1.0.0
 Original Author: yahsan2
 Original Author URI: https://github.com/yahsan2
 Author: hiro
-Author URI: https://github.com/hiro0218/wp-netlify-updater
+Author URI: https://github.com/hiro0218/
 */
 class WpNetlifyUpdater
 {
     function __construct()
     {
-        $this->version = '0.1';
+        $this->version = '1.0.0';
         $this->name = 'Wp Netlify Updater';
         $this->slug = 'wp-netlify-updater';
         $this->prefix = 'wpnu_';
@@ -21,8 +21,41 @@ class WpNetlifyUpdater
         $this->set_options();
 
         if (is_admin()) {
-            add_action('save_post', array($this, 'netlify_webhooks'));
+            add_action('transition_post_status', [$this, 'is_published_now'], 10, 3);
+            add_action('wp_insert_post', [$this, 'do_something_on_published'], 100, 2);
             add_action('admin_menu', array($this, 'add_menu'));
+        }
+    }
+
+    function is_published_now($new_status, $old_status, $post)
+    {
+        global $is_publiched;
+        if (
+            ($old_status == 'auto-draft' ||
+                $old_status == 'draft' ||
+                $old_status == 'pending' ||
+                $old_status == 'future') &&
+            $new_status == 'publish' &&
+            $post->post_type == 'post'
+        ) {
+            if (empty($is_publiched) && $old_status == 'future') {
+                $this->netlify_webhooks();
+            } else {
+                $is_publiched = true;
+            }
+        } else {
+            if (!$is_publiched) {
+                $is_publiched = false;
+            }
+        }
+    }
+
+    function do_something_on_published($post_ID, $post)
+    {
+        global $is_publiched;
+        if ($is_publiched) {
+            $this->netlify_webhooks();
+            $is_publiched = false;
         }
     }
 
